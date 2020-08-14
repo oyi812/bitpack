@@ -74,7 +74,7 @@ func TestBackpack(t *testing.T) {
 		t.Errorf("expect %d, have %d", 3, l)
 	}
 
-	o = Backpack(s, o, 64, 1<<63)
+	_ = Backpack(s, o, 64, 1<<63)
 
 	// Unbackpack
 	var v uint64
@@ -95,7 +95,7 @@ func TestBackpack(t *testing.T) {
 	v, o = Unbackpack(s, o, 4)
 	assert(t, v, 15)
 
-	v, o = Unbackpack(s, o, 64)
+	v, _ = Unbackpack(s, o, 64)
 	assert(t, v, 1<<63)
 }
 

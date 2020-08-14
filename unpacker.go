@@ -1,5 +1,6 @@
 package bitpack
 
+// Unpacker unpacks bit strings from slice
 type Unpacker pack
 
 // Set also resets unpacker
@@ -8,6 +9,7 @@ func (u *Unpacker) Set(slice []byte) {
 	u.offset = 0
 }
 
+// Unpack n bits into v
 func (u *Unpacker) Unpack(n int) (v uint64) {
 	v, n = Unpack(u.slice, u.offset, n)
 	u.offset = n

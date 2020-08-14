@@ -1,5 +1,6 @@
 package bitpack
 
+// Packer packs bit strings into slice
 type Packer pack
 
 // Set also resets packer
@@ -8,10 +9,12 @@ func (p *Packer) Set(slice []byte) {
 	p.offset = 0
 }
 
+// Len returns the total packed bit length
 func (p *Packer) Len() int {
 	return Len(p.offset)
 }
 
+// Pack appends n bits of v
 func (p *Packer) Pack(n int, v uint64) {
 	p.offset = Pack(p.slice, p.offset, n, v)
 }
