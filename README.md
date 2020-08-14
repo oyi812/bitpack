@@ -1,6 +1,6 @@
 # bitpack
 
-[![LICENSE](https://img.shields.io/github/license/oyi812/bitpack.svg?style=flat-square)](https://github.com/oyi812/bitpack/blob/master/LICENSE)
+[![LICENSE](https://img.shields.io/badge/license-MIT-lightgrey)](https://github.com/oyi812/bitpack/blob/master/LICENSE)
 
 bitpack is a binary string concatenation utility
 
