@@ -33,7 +33,7 @@ func Unpack(slice []byte, offset, n int) (v uint64, o int) {
 
 		// all done
 		if n <= k {
-			v = uint64(slice[i] << j >> (8-n))
+			v = uint64(slice[i] << j >> (8 - n))
 			return
 		}
 
@@ -52,7 +52,7 @@ func Unpack(slice []byte, offset, n int) (v uint64, o int) {
 
 	// final n bits where 1 <= n <= 8
 	v <<= n
-	v |= uint64(slice[i] >> (8-n))
+	v |= uint64(slice[i] >> (8 - n))
 
 	return
 }
@@ -61,7 +61,7 @@ func Unpack(slice []byte, offset, n int) (v uint64, o int) {
 func Unbackpack(slice []byte, offset, n int) (v uint64, o int) {
 
 	// []byte index
-	i := (offset-1) >> 3
+	i := (offset - 1) >> 3
 
 	// bits remaining (hi)
 	j := offset & 0x7
@@ -76,12 +76,12 @@ func Unbackpack(slice []byte, offset, n int) (v uint64, o int) {
 
 		// all done
 		if n <= j {
-			v = uint64(slice[i] << (j-n) >> (8-n))
+			v = uint64(slice[i] << (j - n) >> (8 - n))
 			return
 		}
 
 		// lowest j bits of v
-		v = uint64(slice[i] >> (8-j))
+		v = uint64(slice[i] >> (8 - j))
 		m += j
 		i--
 	}
@@ -93,8 +93,8 @@ func Unbackpack(slice []byte, offset, n int) (v uint64, o int) {
 	}
 
 	// final n-m bits where 1 <= (n-m) <= 8
-	l := 8-(n-m)
-	v |= uint64(slice[i] << l >> l) << m
+	l := 8 - (n - m)
+	v |= uint64(slice[i]<<l>>l) << m
 
 	return
 }

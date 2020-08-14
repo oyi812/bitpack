@@ -53,7 +53,7 @@ func TestBackpack(t *testing.T) {
 	var buffer [64]byte
 
 	s := buffer[:]
-	o := len(s)<<3
+	o := len(s) << 3
 
 	o = Backpack(s, o, 10, 666)
 	o = Backpack(s, o, 1, 1)
@@ -61,7 +61,7 @@ func TestBackpack(t *testing.T) {
 	o = Backpack(s, o, 7, 42)
 
 	// 7+10+2+1=20 bits fit into 3 bytes
-	l := len(s)-o>>3
+	l := len(s) - o>>3
 	if l != 3 {
 		t.Errorf("expect %d, have %d", 3, l)
 	}
@@ -69,7 +69,7 @@ func TestBackpack(t *testing.T) {
 	o = Backpack(s, o, 4, 15)
 
 	// 20+4=24 bits fit into 3 bytes
-	l = len(s)-o>>3
+	l = len(s) - o>>3
 	if l != 3 {
 		t.Errorf("expect %d, have %d", 3, l)
 	}
@@ -78,7 +78,7 @@ func TestBackpack(t *testing.T) {
 
 	// Unbackpack
 	var v uint64
-	o = len(s)<<3
+	o = len(s) << 3
 
 	v, o = Unbackpack(s, o, 10)
 	assert(t, v, 666)
@@ -136,7 +136,7 @@ func BenchmarkVarint(b *testing.B) {
 		n := 0
 
 		for _, w := range sizes {
-			n += binary.PutUvarint(s[n:], uint64(1) << (w-1))
+			n += binary.PutUvarint(s[n:], uint64(1)<<(w-1))
 		}
 
 		var v uint64

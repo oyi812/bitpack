@@ -4,6 +4,6 @@
 package bitpack
 
 type pack struct {
-	slice []byte
+	slice  []byte
 	offset int // in bits
 }
