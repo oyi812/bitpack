@@ -1,5 +1,4 @@
 # bitpack
-binary string concatenation utility
 
 [![CircleCI](https://circleci.com/gh/oyi812/bitpack.svg?style=svg)](https://circleci.com/gh/oyi812/bitpack)
 [![Go Report Card](https://goreportcard.com/badge/github.com/oyi812/bitpack?style=flat-square)](https://goreportcard.com/report/github.com/oyi812/bitpack)
