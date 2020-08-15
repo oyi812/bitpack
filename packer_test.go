@@ -35,7 +35,7 @@ func TestPacker(t *testing.T) {
 		t.Errorf("expect %d, have %d", 3, p.Len())
 	}
 
-	p.Pack(64, 1<<63)
+	p.Pack(64, 1<<63 + 1)
 
 	var u Unpacker
 	u.Set(buffer[:p.Len()])
@@ -45,7 +45,7 @@ func TestPacker(t *testing.T) {
 	assert(t, u.Unpack(2), 2)
 	assert(t, u.Unpack(1), 1)
 	assert(t, u.Unpack(4), 15)
-	assert(t, u.Unpack(64), 1<<63)
+	assert(t, u.Unpack(64), 1<<63 + 1)
 }
 
 func TestBackpack(t *testing.T) {
@@ -74,7 +74,7 @@ func TestBackpack(t *testing.T) {
 		t.Errorf("expect %d, have %d", 3, l)
 	}
 
-	_ = Backpack(s, o, 64, 1<<63)
+	_ = Backpack(s, o, 64, 1<<63 + 1)
 
 	// Unbackpack
 	var v uint64
@@ -96,7 +96,7 @@ func TestBackpack(t *testing.T) {
 	assert(t, v, 15)
 
 	v, _ = Unbackpack(s, o, 64)
-	assert(t, v, 1<<63)
+	assert(t, v, 1<<63 + 1)
 }
 
 var sizes = [...]int{64, 64, 7, 10, 2, 1, 4, 64}
