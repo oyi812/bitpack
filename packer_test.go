@@ -5,47 +5,47 @@ import (
 	"testing"
 )
 
-func assert(t *testing.T, have, must uint64) {
+func expect(t *testing.T, have, must uint64) {
 	if have != must {
 		t.Errorf("expect %d, have %d", must, have)
 	}
 }
 
+// TestPacker packs and unpacks alternating bit
+// runs of 0s and 1s for each width in 1..64
 func TestPacker(t *testing.T) {
 
-	var buffer [64]byte
+	// length is double the sum of 1..64 bits in bytes
+	const length = (2*32*65)>>3
+	var buffer [1<<16]byte
+
+	var ones uint64; ones--
 
 	var p Packer
 	p.Set(buffer[:])
 
-	p.Pack(7, 42)
-	p.Pack(10, 666)
-	p.Pack(2, 2)
-	p.Pack(1, 1)
-
-	// 7+10+2+1=20 bits fit into 3 bytes
-	if p.Len() != 3 {
-		t.Errorf("expect %d, have %d", 3, p.Len())
+	for w := 1; w <= 64; w++ {
+		p.Pack(w, 0)
+		p.Pack(w, ones)
 	}
 
-	p.Pack(4, 15)
-
-	// 20+4=24 bits fit into 3 bytes
-	if p.Len() != 3 {
-		t.Errorf("expect %d, have %d", 3, p.Len())
+	if p.Len() != length {
+		t.Errorf("expect %d, have %d", length, p.Len())
 	}
-
-	p.Pack(64, 1<<63 + 1)
 
 	var u Unpacker
 	u.Set(buffer[:p.Len()])
 
-	assert(t, u.Unpack(7), 42)
-	assert(t, u.Unpack(10), 666)
-	assert(t, u.Unpack(2), 2)
-	assert(t, u.Unpack(1), 1)
-	assert(t, u.Unpack(4), 15)
-	assert(t, u.Unpack(64), 1<<63 + 1)
+	for w := 1; w <= 64; w++ {
+
+		if must, have := uint64(0), u.Unpack(w); have != must {
+			t.Errorf("expect %d, have %d", must, have)
+		}
+
+		if must, have := uint64(1<<w-1), u.Unpack(w); have != must {
+			t.Errorf("expect %d, have %d", must, have)
+		}
+	}
 }
 
 func TestBackpack(t *testing.T) {
@@ -81,22 +81,22 @@ func TestBackpack(t *testing.T) {
 	o = len(s) << 3
 
 	v, o = Unbackpack(s, o, 10)
-	assert(t, v, 666)
+	expect(t, v, 666)
 
 	v, o = Unbackpack(s, o, 1)
-	assert(t, v, 1)
+	expect(t, v, 1)
 
 	v, o = Unbackpack(s, o, 2)
-	assert(t, v, 2)
+	expect(t, v, 2)
 
 	v, o = Unbackpack(s, o, 7)
-	assert(t, v, 42)
+	expect(t, v, 42)
 
 	v, o = Unbackpack(s, o, 4)
-	assert(t, v, 15)
+	expect(t, v, 15)
 
 	v, _ = Unbackpack(s, o, 64)
-	assert(t, v, 1<<63 + 1)
+	expect(t, v, 1<<63 + 1)
 }
 
 var sizes = [...]int{64, 64, 7, 10, 2, 1, 4, 64}
